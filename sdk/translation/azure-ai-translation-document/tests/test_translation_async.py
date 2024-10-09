@@ -19,10 +19,12 @@ from azure.storage.blob import ContainerClient
 from azure.ai.translation.document.models._models import StartTranslationDetails as _StartTranslationDetails
 from azure.ai.translation.document import DocumentTranslationInput, TranslationTarget, TranslationGlossary
 from azure.ai.translation.document.aio import DocumentTranslationClient
+from azure.identity import DefaultAzureCredential
 
 DocumentTranslationClientPreparer = functools.partial(_DocumentTranslationClientPreparer, DocumentTranslationClient)
 
-GLOSSARY_FILE_NAME = os.path.abspath(os.path.join(os.path.abspath(__file__), "..", "./glossaries-valid.csv"))
+GLOSSARY_FILE_PATH = os.path.abspath(os.path.join(os.path.abspath(__file__), "..", "./glossaries-valid.csv"))
+GLOSSARY_FILE_NAME = os.path.basename(GLOSSARY_FILE_PATH)
 
 
 class TestTranslation(AsyncDocumentTranslationTest):
@@ -517,25 +519,25 @@ class TestTranslation(AsyncDocumentTranslationTest):
     async def test_translation_with_glossary(self, **kwargs):
         client = kwargs.pop("client")
         doc = Document(data=b"testing")
-        source_container_sas_url = self.create_source_container(data=[doc])
-        target_container_sas_url = self.create_target_container()
+        source_container_url = self.create_source_container(data=[doc])
+        target_container_url = self.create_target_container()
 
-        container_client = ContainerClient(self.storage_endpoint, self.source_container_name, self.storage_key)
-        with open(GLOSSARY_FILE_NAME, "rb") as fd:
-            container_client.upload_blob(name=GLOSSARY_FILE_NAME, data=fd.read())
+        container_client = ContainerClient(self.storage_endpoint, self.source_container_name, DefaultAzureCredential())
+        with open(GLOSSARY_FILE_PATH, "rb") as fd:
+            container_client.upload_blob(name=GLOSSARY_FILE_PATH, data=fd.read())
 
-        prefix, suffix = source_container_sas_url.split("?")
-        glossary_file_sas_url = prefix + "/" + GLOSSARY_FILE_NAME + "?" + suffix
+        glossary_file_url = container_client.url + "/" + GLOSSARY_FILE_NAME
+        
         async with client:
             poller = await client.begin_translation(
-                source_container_sas_url,
-                target_container_sas_url,
+                source_container_url,
+                target_container_url,
                 "es",
-                glossaries=[TranslationGlossary(glossary_url=glossary_file_sas_url, file_format="csv")],
+                glossaries=[TranslationGlossary(glossary_url=glossary_file_url, file_format="csv")],
             )
             result = await poller.result()
 
-        container_client = ContainerClient(self.storage_endpoint, self.target_container_name, self.storage_key)
+        container_client = ContainerClient(self.storage_endpoint, self.target_container_name, DefaultAzureCredential())
 
         # download translated file and assert that translation reflects glossary changes
         document = doc.name + doc.suffix
