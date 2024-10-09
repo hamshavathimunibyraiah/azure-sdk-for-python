@@ -5,6 +5,7 @@
 
 import functools
 from asynctestcase import AsyncDocumentTranslationTest
+from azure.ai.translation.document.models import FileFormatType
 from preparer import (
     DocumentTranslationPreparer,
     DocumentTranslationClientPreparer as _DocumentTranslationClientPreparer,
@@ -25,3 +26,30 @@ class TestModelUpdates(AsyncDocumentTranslationTest):
         docs_count = 2
         await self._prepare_and_validate_start_translation_details_async(client, docs_count, wait=False, variables=variables)
         return variables
+    
+    @DocumentTranslationPreparer()
+    @DocumentTranslationClientPreparer()
+    @recorded_by_proxy_async
+    async def test_supported_formats(self, **kwargs):
+        client = kwargs.pop("client")
+        
+        # get supported glossary formats
+        supported_glossary_formats = await client._get_supported_formats(FileFormatType.GLOSSARY)
+        assert supported_glossary_formats is not None
+        # validate
+        for glossary_format in supported_glossary_formats:
+            self._validate_format(glossary_format)
+
+        # get supported document formats
+        supported_document_formats = await client._get_supported_formats(FileFormatType.DOCUMENT)
+        assert supported_document_formats is not None
+        # validate
+        for document_format in supported_document_formats:
+            self._validate_format(document_format)
+
+        # get supported formats
+        supported_formats = await client._get_supported_formats()
+        assert supported_formats is not None
+        # validate
+        for format in supported_formats:
+            self._validate_format(format)

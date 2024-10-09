@@ -33,21 +33,21 @@ class TestModelUpdates(DocumentTranslationTest):
         client = kwargs.pop("client")
         
         # get supported glossary formats
-        supported_glossary_formats = client.get_supported_formats(FileFormatType.GLOSSARY)
+        supported_glossary_formats = client._get_supported_formats(FileFormatType.GLOSSARY)
         assert supported_glossary_formats is not None
         # validate
         for glossary_format in supported_glossary_formats:
             self._validate_format(glossary_format)
 
         # get supported document formats
-        supported_document_formats = client.get_supported_formats(FileFormatType.DOCUMENT)
+        supported_document_formats = client._get_supported_formats(FileFormatType.DOCUMENT)
         assert supported_document_formats is not None
         # validate
         for document_format in supported_document_formats:
             self._validate_format(document_format)
 
         # get supported formats
-        supported_formats = client.get_supported_formats()
+        supported_formats = client._get_supported_formats()
         assert supported_formats is not None
         # validate
         for format in supported_formats:
