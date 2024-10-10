@@ -7,8 +7,8 @@ import os
 import time
 import datetime
 import uuid
-from devtools_testutils import AzureRecordedTestCase, set_custom_default_matcher
-from azure.storage.blob import generate_container_sas, ContainerClient
+from devtools_testutils import AzureRecordedTestCase
+from azure.storage.blob import ContainerClient
 from azure.ai.translation.document import DocumentTranslationInput, TranslationTarget
 from azure.ai.translation.document.models._models import BatchRequest, SourceInput, StartTranslationDetails
 from devtools_testutils import AzureRecordedTestCase
@@ -226,18 +226,18 @@ class DocumentTranslationTest(AzureRecordedTestCase):
         for i in range(operations_count):
             # prepare containers and test data
             blob_data = Document.create_dummy_docs(docs_per_operation)
-            source_container_sas_url = self.create_source_container(
+            source_container_url = self.create_source_container(
                 data=blob_data, variables=variables, container_suffix=str(i) + container_suffix
             )
-            target_container_sas_url = self.create_target_container(
+            target_container_url = self.create_target_container(
                 variables=variables, container_suffix=str(i) + container_suffix
             )
 
             # prepare translation inputs
             translation_inputs = [
                 DocumentTranslationInput(
-                    source_url=source_container_sas_url,
-                    targets=[TranslationTarget(target_url=target_container_sas_url, language=language)],
+                    source_url=source_container_url,
+                    targets=[TranslationTarget(target_url=target_container_url, language=language)],
                 )
             ]
 
@@ -260,14 +260,14 @@ class DocumentTranslationTest(AzureRecordedTestCase):
 
         # prepare containers and test data
         blob_data = Document.create_dummy_docs(docs_count=docs_count)
-        source_container_sas_url = self.create_source_container(data=blob_data, variables=variables)
-        target_container_sas_url = self.create_target_container(variables=variables)
+        source_container_url = self.create_source_container(data=blob_data, variables=variables)
+        target_container_url = self.create_target_container(variables=variables)
 
         # prepare translation inputs
         translation_inputs = [
             DocumentTranslationInput(
-                source_url=source_container_sas_url,
-                targets=[TranslationTarget(target_url=target_container_sas_url, language=language)],
+                source_url=source_container_url,
+                targets=[TranslationTarget(target_url=target_container_url, language=language)],
             )
         ]
 

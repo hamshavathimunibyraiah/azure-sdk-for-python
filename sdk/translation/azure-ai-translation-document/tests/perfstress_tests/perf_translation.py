@@ -62,10 +62,10 @@ class TranslationPerfStressTest(PerfStressTest):
 
     async def global_setup(self):
         """The global setup is run only once."""
-        self.source_container_sas_url = await self.create_source_container()
-        self.target_container_sas_url = await self.create_target_container()
+        self.source_container_url = await self.create_source_container()
+        self.target_container_url = await self.create_target_container()
         poller = await self.async_service_client.begin_translation(
-            self.source_container_sas_url, self.target_container_sas_url, "fr"
+            self.source_container_url, self.target_container_url, "fr"
         )
         self.translation_id = poller.id
 

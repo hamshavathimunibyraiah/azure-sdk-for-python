@@ -40,14 +40,14 @@ class TestTranslation(AsyncDocumentTranslationTest):
         client = DocumentTranslationClient(translation_document_test_endpoint, token, **kwargs)
         # prepare containers and test data
         blob_data = b"This is some text"
-        source_container_sas_url = self.create_source_container(data=Document(data=blob_data))
-        target_container_sas_url = self.create_target_container()
+        source_container_url = self.create_source_container(data=Document(data=blob_data))
+        target_container_url = self.create_target_container()
 
         # prepare translation inputs
         translation_inputs = [
             DocumentTranslationInput(
-                source_url=source_container_sas_url,
-                targets=[TranslationTarget(target_url=target_container_sas_url, language="fr")],
+                source_url=source_container_url,
+                targets=[TranslationTarget(target_url=target_container_url, language="fr")],
             )
         ]
 
@@ -62,14 +62,14 @@ class TestTranslation(AsyncDocumentTranslationTest):
         variables = kwargs.pop("variables", {})
         # prepare containers and test data
         blob_data = b"This is some text"
-        source_container_sas_url = self.create_source_container(data=Document(data=blob_data), variables=variables)
-        target_container_sas_url = self.create_target_container(variables=variables)
+        source_container_url = self.create_source_container(data=Document(data=blob_data), variables=variables)
+        target_container_url = self.create_target_container(variables=variables)
 
         # prepare translation inputs
         translation_inputs = [
             DocumentTranslationInput(
-                source_url=source_container_sas_url,
-                targets=[TranslationTarget(target_url=target_container_sas_url, language="es")],
+                source_url=source_container_url,
+                targets=[TranslationTarget(target_url=target_container_url, language="es")],
             )
         ]
 
@@ -85,17 +85,17 @@ class TestTranslation(AsyncDocumentTranslationTest):
         variables = kwargs.pop("variables", {})
         # prepare containers and test data
         blob_data = b"This is some text"
-        source_container_sas_url = self.create_source_container(data=Document(data=blob_data), variables=variables)
-        target_container_sas_url = self.create_target_container(variables=variables)
-        additional_target_container_sas_url = self.create_target_container(variables=variables, container_suffix="2")
+        source_container_url = self.create_source_container(data=Document(data=blob_data), variables=variables)
+        target_container_url = self.create_target_container(variables=variables)
+        additional_target_container_url = self.create_target_container(variables=variables, container_suffix="2")
 
         # prepare translation inputs
         translation_inputs = [
             DocumentTranslationInput(
-                source_url=source_container_sas_url,
+                source_url=source_container_url,
                 targets=[
-                    TranslationTarget(target_url=target_container_sas_url, language="es"),
-                    TranslationTarget(target_url=additional_target_container_sas_url, language="fr"),
+                    TranslationTarget(target_url=target_container_url, language="es"),
+                    TranslationTarget(target_url=additional_target_container_url, language="fr"),
                 ],
             )
         ]
@@ -112,22 +112,22 @@ class TestTranslation(AsyncDocumentTranslationTest):
         variables = kwargs.pop("variables", {})
         # prepare containers and test data
         blob_data = b"This is some text"
-        source_container_sas_url = self.create_source_container(data=Document(data=blob_data), variables=variables)
+        source_container_url = self.create_source_container(data=Document(data=blob_data), variables=variables)
         blob_data = b"This is some text2"
-        additional_source_container_sas_url = self.create_source_container(
+        additional_source_container_url = self.create_source_container(
             data=Document(data=blob_data), variables=variables, container_suffix="2"
         )
-        target_container_sas_url = self.create_target_container(variables=variables)
+        target_container_url = self.create_target_container(variables=variables)
 
         # prepare translation inputs
         translation_inputs = [
             DocumentTranslationInput(
-                source_url=source_container_sas_url,
-                targets=[TranslationTarget(target_url=target_container_sas_url, language="es")],
+                source_url=source_container_url,
+                targets=[TranslationTarget(target_url=target_container_url, language="es")],
             ),
             DocumentTranslationInput(
-                source_url=additional_source_container_sas_url,
-                targets=[TranslationTarget(target_url=target_container_sas_url, language="fr")],
+                source_url=additional_source_container_url,
+                targets=[TranslationTarget(target_url=target_container_url, language="fr")],
             ),
         ]
 
@@ -144,16 +144,16 @@ class TestTranslation(AsyncDocumentTranslationTest):
         # prepare containers and test data
         blob_data = b"This is some text"
         prefix = "xyz"
-        source_container_sas_url = self.create_source_container(
+        source_container_url = self.create_source_container(
             data=Document(data=blob_data, prefix=prefix), variables=variables
         )
-        target_container_sas_url = self.create_target_container(variables=variables)
+        target_container_url = self.create_target_container(variables=variables)
 
         # prepare translation inputs
         translation_inputs = [
             DocumentTranslationInput(
-                source_url=source_container_sas_url,
-                targets=[TranslationTarget(target_url=target_container_sas_url, language="es")],
+                source_url=source_container_url,
+                targets=[TranslationTarget(target_url=target_container_url, language="es")],
                 prefix=prefix,
             )
         ]
@@ -171,14 +171,14 @@ class TestTranslation(AsyncDocumentTranslationTest):
         # prepare containers and test data
         blob_data = b"This is some text"
         suffix = "txt"
-        source_container_sas_url = self.create_source_container(data=Document(data=blob_data), variables=variables)
-        target_container_sas_url = self.create_target_container(variables=variables)
+        source_container_url = self.create_source_container(data=Document(data=blob_data), variables=variables)
+        target_container_url = self.create_target_container(variables=variables)
 
         # prepare translation inputs
         translation_inputs = [
             DocumentTranslationInput(
-                source_url=source_container_sas_url,
-                targets=[TranslationTarget(target_url=target_container_sas_url, language="es")],
+                source_url=source_container_url,
+                targets=[TranslationTarget(target_url=target_container_url, language="es")],
                 suffix=suffix,
             )
         ]
@@ -194,13 +194,13 @@ class TestTranslation(AsyncDocumentTranslationTest):
         client = kwargs.pop("client")
         variables = kwargs.pop("variables", {})
         # prepare containers and test data
-        target_container_sas_url = self.create_target_container(variables=variables)
+        target_container_url = self.create_target_container(variables=variables)
 
         # prepare translation inputs
         translation_inputs = [
             DocumentTranslationInput(
                 source_url="https://idont.ex.ist",
-                targets=[TranslationTarget(target_url=target_container_sas_url, language="es")],
+                targets=[TranslationTarget(target_url=target_container_url, language="es")],
             )
         ]
         async with client:
@@ -218,12 +218,12 @@ class TestTranslation(AsyncDocumentTranslationTest):
         variables = kwargs.pop("variables", {})
         # prepare containers and test data
         blob_data = b"This is some text"
-        source_container_sas_url = self.create_source_container(data=Document(data=blob_data), variables=variables)
+        source_container_url = self.create_source_container(data=Document(data=blob_data), variables=variables)
 
         # prepare translation inputs
         translation_inputs = [
             DocumentTranslationInput(
-                source_url=source_container_sas_url,
+                source_url=source_container_url,
                 targets=[TranslationTarget(target_url="https://idont.ex.ist", language="es")],
             )
         ]
@@ -242,16 +242,16 @@ class TestTranslation(AsyncDocumentTranslationTest):
         client = kwargs.pop("client")
         variables = kwargs.pop("variables", {})
         # prepare containers and test data
-        source_container_sas_url = self.create_source_container(
+        source_container_url = self.create_source_container(
             data=[Document(suffix=".txt"), Document(suffix=".jpg")], variables=variables
         )
-        target_container_sas_url = self.create_target_container(variables=variables)
+        target_container_url = self.create_target_container(variables=variables)
 
         # prepare translation inputs
         translation_inputs = [
             DocumentTranslationInput(
-                source_url=source_container_sas_url,
-                targets=[TranslationTarget(target_url=target_container_sas_url, language="es")],
+                source_url=source_container_url,
+                targets=[TranslationTarget(target_url=target_container_url, language="es")],
             )
         ]
         async with client:
@@ -270,14 +270,14 @@ class TestTranslation(AsyncDocumentTranslationTest):
         client = kwargs.pop("client")
         variables = kwargs.pop("variables", {})
         # prepare containers and test data
-        source_container_sas_url = self.create_source_container(data=Document(name="document"), variables=variables)
-        target_container_sas_url = self.create_target_container(data=Document(name="document"), variables=variables)
+        source_container_url = self.create_source_container(data=Document(name="document"), variables=variables)
+        target_container_url = self.create_target_container(data=Document(name="document"), variables=variables)
 
         # prepare translation inputs
         translation_inputs = [
             DocumentTranslationInput(
-                source_url=source_container_sas_url,
-                targets=[TranslationTarget(target_url=target_container_sas_url, language="es")],
+                source_url=source_container_url,
+                targets=[TranslationTarget(target_url=target_container_url, language="es")],
             )
         ]
 
@@ -299,16 +299,16 @@ class TestTranslation(AsyncDocumentTranslationTest):
         client = kwargs.pop("client")
         variables = kwargs.pop("variables", {})
         # prepare containers and test data
-        source_container_sas_url = self.create_source_container(
+        source_container_url = self.create_source_container(
             data=[Document(name="document"), Document()], variables=variables
         )
-        target_container_sas_url = self.create_target_container(data=Document(name="document"), variables=variables)
+        target_container_url = self.create_target_container(data=Document(name="document"), variables=variables)
 
         # prepare translation inputs
         translation_inputs = [
             DocumentTranslationInput(
-                source_url=source_container_sas_url,
-                targets=[TranslationTarget(target_url=target_container_sas_url, language="es")],
+                source_url=source_container_url,
+                targets=[TranslationTarget(target_url=target_container_url, language="es")],
             )
         ]
         async with client:
@@ -328,14 +328,14 @@ class TestTranslation(AsyncDocumentTranslationTest):
         client = kwargs.pop("client")
         variables = kwargs.pop("variables", {})
         # prepare containers and test data
-        source_container_sas_url = self.create_source_container(Document(data=b""), variables=variables)
-        target_container_sas_url = self.create_target_container(variables=variables)
+        source_container_url = self.create_source_container(Document(data=b""), variables=variables)
+        target_container_url = self.create_target_container(variables=variables)
 
         # prepare translation inputs
         translation_inputs = [
             DocumentTranslationInput(
-                source_url=source_container_sas_url,
-                targets=[TranslationTarget(target_url=target_container_sas_url, language="es")],
+                source_url=source_container_url,
+                targets=[TranslationTarget(target_url=target_container_url, language="es")],
             )
         ]
         async with client:
@@ -355,15 +355,15 @@ class TestTranslation(AsyncDocumentTranslationTest):
         client = kwargs.pop("client")
         variables = kwargs.pop("variables", {})
         # prepare containers and test data
-        source_container_sas_url = self.create_source_container(data=Document(data=b"hello world"), variables=variables)
-        target_container_sas_url = self.create_target_container(variables=variables)
-        target_container_sas_url_2 = self.create_target_container(variables=variables, container_suffix="2")
+        source_container_url = self.create_source_container(data=Document(data=b"hello world"), variables=variables)
+        target_container_url = self.create_target_container(variables=variables)
+        target_container_url_2 = self.create_target_container(variables=variables, container_suffix="2")
 
         # prepare translation inputs
         translation_inputs = [
             DocumentTranslationInput(
-                source_url=source_container_sas_url,
-                targets=[TranslationTarget(target_url=target_container_sas_url, language="es")],
+                source_url=source_container_url,
+                targets=[TranslationTarget(target_url=target_container_url, language="es")],
             )
         ]
 
@@ -374,7 +374,7 @@ class TestTranslation(AsyncDocumentTranslationTest):
             self._validate_translation_metadata(poller, status="Succeeded", total=1, succeeded=1)
 
             # keyword
-            translation_inputs[0].targets[0].target_url = target_container_sas_url_2
+            translation_inputs[0].targets[0].target_url = target_container_url_2
             poller = await client.begin_translation(inputs=translation_inputs)
             result = await poller.result()
             self._validate_translation_metadata(poller, status="Succeeded", total=1, succeeded=1)
@@ -387,19 +387,19 @@ class TestTranslation(AsyncDocumentTranslationTest):
         client = kwargs.pop("client")
         variables = kwargs.pop("variables", {})
         # prepare containers and test data
-        source_container_sas_url = self.create_source_container(data=Document(data=b"hello world"), variables=variables)
-        target_container_sas_url = self.create_target_container(variables=variables)
-        target_container_sas_url_2 = self.create_target_container(variables=variables, container_suffix="2")
+        source_container_url = self.create_source_container(data=Document(data=b"hello world"), variables=variables)
+        target_container_url = self.create_target_container(variables=variables)
+        target_container_url_2 = self.create_target_container(variables=variables, container_suffix="2")
 
         # positional
         async with client:
-            poller = await client.begin_translation(source_container_sas_url, target_container_sas_url, "es")
+            poller = await client.begin_translation(source_container_url, target_container_url, "es")
             result = await poller.result()
             self._validate_translation_metadata(poller, status="Succeeded", total=1, succeeded=1)
 
             # keyword
             poller = await client.begin_translation(
-                source_url=source_container_sas_url, target_url=target_container_sas_url_2, target_language="es"
+                source_url=source_container_url, target_url=target_container_url_2, target_language="es"
             )
             result = await poller.result()
             self._validate_translation_metadata(poller, status="Succeeded", total=1, succeeded=1)
@@ -433,11 +433,11 @@ class TestTranslation(AsyncDocumentTranslationTest):
     @DocumentTranslationClientPreparer()
     async def test_translation_continuation_token(self, **kwargs):
         client = kwargs.pop("client")
-        source_container_sas_url = self.create_source_container(data=Document(data=b"hello world"))
-        target_container_sas_url = self.create_target_container()
+        source_container_url = self.create_source_container(data=Document(data=b"hello world"))
+        target_container_url = self.create_target_container()
 
         async with client:
-            initial_poller = await client.begin_translation(source_container_sas_url, target_container_sas_url, "es")
+            initial_poller = await client.begin_translation(source_container_url, target_container_url, "es")
             cont_token = initial_poller.continuation_token()
 
             poller = await client.begin_translation(None, continuation_token=cont_token)
@@ -454,13 +454,13 @@ class TestTranslation(AsyncDocumentTranslationTest):
         client = kwargs.pop("client")
         variables = kwargs.pop("variables", {})
         # prepare containers and test data
-        source_container_sas_url = self.create_source_container(data=Document(data=b"hello world"), variables=variables)
-        target_container_sas_url = self.create_target_container(variables=variables)
+        source_container_url = self.create_source_container(data=Document(data=b"hello world"), variables=variables)
+        target_container_url = self.create_target_container(variables=variables)
 
         def callback(request):
             req = _StartTranslationDetails._deserialize(json.loads(request.http_request.body), [])
             input = req.inputs[0]
-            assert input.source.source_url == source_container_sas_url
+            assert input.source.source_url == source_container_url
             assert input.source.language == "en"
             assert input.source.filter.prefix == ""
             assert input.source.filter.suffix == ".txt"
@@ -469,13 +469,13 @@ class TestTranslation(AsyncDocumentTranslationTest):
             assert input.targets[0].glossaries[0].file_format == "txt"
             assert input.targets[0].glossaries[0].glossary_url == "https://glossaryfile.txt"
             assert input.targets[0].language == "es"
-            assert input.targets[0].target_url == target_container_sas_url
+            assert input.targets[0].target_url == target_container_url
 
         async with client:
             try:
                 poller = await client.begin_translation(
-                    source_container_sas_url,
-                    target_container_sas_url,
+                    source_container_url,
+                    target_container_url,
                     "es",
                     storage_type="File",
                     source_language="en",
@@ -497,14 +497,14 @@ class TestTranslation(AsyncDocumentTranslationTest):
         client = kwargs.pop("client")
         variables = kwargs.pop("variables", {})
         # prepare containers and test data
-        source_container_sas_url = self.create_source_container(
+        source_container_url = self.create_source_container(
             data=[Document(data=b"hello world", prefix="kwargs"), Document(data=b"hello world")], variables=variables
         )
-        target_container_sas_url = self.create_target_container(variables=variables)
+        target_container_url = self.create_target_container(variables=variables)
 
         async with client:
             poller = await client.begin_translation(
-                source_container_sas_url, target_container_sas_url, "fr", prefix="kwargs"
+                source_container_url, target_container_url, "fr", prefix="kwargs"
             )
             result = await poller.result()
             self._validate_translation_metadata(poller, status="Succeeded", total=1, succeeded=1)
